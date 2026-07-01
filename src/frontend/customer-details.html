@@ -321,6 +321,7 @@
                         <cds-text-input id="firstName" label="First Name" value="${customer.firstName || ''}"></cds-text-input>
                         <cds-text-input id="lastName" label="Last Name" value="${customer.lastName || ''}"></cds-text-input>
                         <cds-text-input id="phoneNumber" label="Phone Number" value="${customer.phoneNumber || ''}"></cds-text-input>
+                        <cds-text-input id="email" label="Email Address" value="${customer.email || ''}"></cds-text-input>
                         <cds-text-input id="dateOfBirth" label="Date of Birth" value="${formattedDOB}"></cds-text-input>
                         <cds-text-input id="addressLine1" label="Address Line 1" value="${customer.address?.addressLine1 || ''}"></cds-text-input>
                         <cds-text-input id="addressLine2" label="Address Line 2" value="${customer.address?.addressLine2 || ''}"></cds-text-input>
@@ -425,13 +426,11 @@
                     ? formatCurrency(account.currentBalance, account.currency)
                     : '<cds-loading size="sm"></cds-loading>';
                 
-                // For IMS accounts (with customerId), use accountId as accountNumber if not present
-                const accountNumber = account.accountNumber || (account.customerId ? account.accountId : 'N/A');
-                
-                // For IMS accounts, pass customerId in the URL; for CICS, pass accountId
-                const viewLink = account.customerId
-                    ? `account-details.html?customerId=${account.customerId}&accountId=${account.accountId}`
-                    : `account-details.html?id=${account.accountId}`;
+                const customerSystem = currentCustomer?._system || 'CICS';
+                const accountNumber = account.accountNumber || (customerSystem === 'IMS' ? account.accountId : 'N/A');
+                const viewLink = customerSystem === 'IMS'
+                    ? `account-details.html?system=IMS&customerId=${currentCustomer.customerId}&accountId=${account.accountId}`
+                    : `account-details.html?system=CICS&id=${account.accountId}`;
                 
                 tableHTML += `
                     <tr>
@@ -559,6 +558,7 @@
             const firstName = document.getElementById('firstName').value.trim();
             const lastName = document.getElementById('lastName').value.trim();
             const phoneNumber = document.getElementById('phoneNumber').value.trim();
+            const email = document.getElementById('email').value.trim();
             const dateOfBirth = document.getElementById('dateOfBirth').value.trim();
             const addressLine1 = document.getElementById('addressLine1').value.trim();
             const addressLine2 = document.getElementById('addressLine2').value.trim();
@@ -587,6 +587,12 @@
                     'Date of Birth must be in format YYYY-MM-DD');
                 return;
             }
+
+            if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+                displayNotification('error', 'Validation Error',
+                    'Email address must be a valid address');
+                return;
+            }
             
             // Build update data object (only include non-empty fields)
             const updatedData = {};
@@ -595,6 +601,7 @@
             if (firstName) updatedData.firstName = firstName;
             if (lastName) updatedData.lastName = lastName;
             if (phoneNumber) updatedData.phoneNumber = phoneNumber;
+            if (email) updatedData.email = email;
             if (dateOfBirth) updatedData.dateOfBirth = dateOfBirth;
             
             // Address object (only include if at least one field is provided)

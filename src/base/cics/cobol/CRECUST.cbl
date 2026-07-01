@@ -82,6 +82,7 @@
           03 HV-CUSTOMER-CREATE-DATE    PIC S9(9) COMP.
           03 HV-CUSTOMER-CREDIT-SCORE   PIC S9(4) COMP.
           03 HV-CUSTOMER-CS-REVIEW-DATE PIC S9(9) COMP.
+          03 HV-CUSTOMER-EMAIL          PIC X(60).
 
       * PROCTRAN DB2 copybook
            EXEC SQL
@@ -287,6 +288,7 @@
                 07 WS-CHILD-CS-REVIEW-DAY  PIC 99 DISPLAY.
                 07 WS-CHILD-CS-REVIEW-MONTH PIC 99 DISPLAY.
                 07 WS-CHILD-CS-REVIEW-YEAR PIC 9999 DISPLAY.
+             05 WS-CHILD-EMAIL             PIC X(60).
              05 WS-CHILD-SUCCESS           PIC X.
              05 WS-CHILD-FAIL-CODE         PIC X.
 
@@ -1154,6 +1156,7 @@
            MOVE COMM-CREATED-DATE TO CUSTOMER-CREATED-DATE.
            MOVE COMM-CREDIT-SCORE TO CUSTOMER-CREDIT-SCORE.
            MOVE COMM-CS-REVIEW-DATE TO CUSTOMER-CS-REVIEW-DATE.
+           MOVE COMM-EMAIL TO CUSTOMER-EMAIL.
 
       *
       *    Populate host variables for DB2 INSERT
@@ -1177,6 +1180,7 @@
            MOVE COMM-POSTCODE OF COMM-ADDR TO HV-CUSTOMER-POSTCODE.
            MOVE COMM-COUNTRY OF COMM-ADDR TO HV-CUSTOMER-COUNTRY.
            MOVE COMM-STATUS TO HV-CUSTOMER-STATUS.
+           MOVE COMM-EMAIL TO HV-CUSTOMER-EMAIL.
            
       *
       * Convert created date to INTEGER format (YYYYMMDD)
@@ -1234,7 +1238,8 @@
                   CUSTOMER_STATUS,
                   CUSTOMER_CREATED_DATE,
                   CUSTOMER_CREDIT_SCORE,
-                  CUSTOMER_CS_REVIEW_DATE)
+                  CUSTOMER_CS_REVIEW_DATE,
+                  CUSTOMER_EMAIL)
               VALUES
                  (:HV-CUSTOMER-EYECATCHER,
                   :HV-CUSTOMER-SORTCODE,
@@ -1252,7 +1257,8 @@
                   :HV-CUSTOMER-STATUS,
                   :HV-CUSTOMER-CREATE-DATE,
                   :HV-CUSTOMER-CREDIT-SCORE,
-                  :HV-CUSTOMER-CS-REVIEW-DATE)
+                  :HV-CUSTOMER-CS-REVIEW-DATE,
+                  :HV-CUSTOMER-EMAIL)
            END-EXEC.
 
       *

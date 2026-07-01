@@ -33,6 +33,10 @@ mappings:
         required: false
         nullable: false
         template: "{{$zosAssetResponse.commarea.INQCUSTZ.\"INQCUST-PHONE\"}}"
+    - email:
+        required: false
+        nullable: false
+        template: "{{$trim($zosAssetResponse.commarea.INQCUSTZ.\"INQCUST-EMAIL\")}}"
     - address:
         required: false
         nullable: false

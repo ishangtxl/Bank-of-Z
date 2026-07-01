@@ -99,7 +99,10 @@ CREATE TABLE BANKZ.CUSTOMER (
                     CUSTOMER_STATUS                CHAR(10),
                     CUSTOMER_CREATED_DATE          INTEGER,
                     CUSTOMER_CREDIT_SCORE          SMALLINT,
-                    CUSTOMER_CS_REVIEW_DATE        INTEGER
+                    CUSTOMER_CS_REVIEW_DATE        INTEGER,
+                    CUSTOMER_EMAIL                 CHAR(60)
+                                                  NOT NULL
+                                                  WITH DEFAULT ' '
                    )
 IN BANKZ.CUSTOMER  NOT VOLATILE
 CARDINALITY  AUDIT NONE  DATA CAPTURE NONE;

@@ -126,6 +126,7 @@ class CustomersApi extends BaseApi {
      * @param {string} customerData.lastName - Last name (required)
      * @param {string} [customerData.dateOfBirth] - Date of birth (YYYY-MM-DD)
      * @param {string} [customerData.phoneNumber] - Phone number
+     * @param {string} [customerData.email] - Email address
      * @param {Object} [customerData.address] - Address object
      * @param {string} [customerData.customerStatus] - Customer status
      * @returns {Promise<CreateCustomerResponse>} Created customer with customerId and sortCode
@@ -378,6 +379,7 @@ export { ApiClient, CustomersApi, AccountsApi, ApiConfiguration };
  * @property {string} lastName - Customer last name
  * @property {string} [dateOfBirth] - Customer date of birth (YYYY-MM-DD)
  * @property {string} [phoneNumber] - Customer phone number
+ * @property {string} [email] - Customer email address
  * @property {Address} [address] - Customer address
  * @property {string} [customerStatus] - Current status (ACTIVE, INACTIVE, SUSPENDED)
  * @property {string} [createdDate] - Date when customer account was created

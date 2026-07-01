@@ -22,7 +22,7 @@ mappings:
             - COMM-LAST-NAME:
                 required: false
                 nullable: false
-                template: "{{$exists(body.lastName) ? $body.firstName : \"\"}}"
+                template: "{{$exists(body.lastName) ? $body.lastName : \"\"}}"
         - COMM-DOB:
             required: false
             nullable: false
@@ -71,3 +71,7 @@ mappings:
             required: false
             nullable: false
             template: "{{$body.customerStatus}}"
+        - COMM-EMAIL:
+            required: false
+            nullable: false
+            template: "{{$exists(body.email) ? $body.email : \"\"}}"

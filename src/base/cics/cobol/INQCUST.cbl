@@ -63,6 +63,7 @@
           03 HV-CUSTOMER-CREATE-DATE    PIC S9(9) COMP.
           03 HV-CUSTOMER-CREDIT-SCORE   PIC S9(4) COMP.
           03 HV-CUSTOMER-CS-REVIEW-DATE PIC S9(9) COMP.
+          03 HV-CUSTOMER-EMAIL          PIC X(60).
 
       * Pull in the SQL COMMAREA
        EXEC SQL
@@ -276,6 +277,8 @@
                 TO INQCUST-CREDIT-SCORE
              MOVE CUSTOMER-CS-REVIEW-DATE OF OUTPUT-DATA
                 TO INQCUST-CS-REVIEW-DT
+             MOVE CUSTOMER-EMAIL OF OUTPUT-DATA
+                TO INQCUST-EMAIL
            END-IF.
 
            PERFORM GET-ME-OUT-OF-HERE.
@@ -324,7 +327,8 @@
                      CUSTOMER_STATUS,
                      CUSTOMER_CREATED_DATE,
                      CUSTOMER_CREDIT_SCORE,
-                     CUSTOMER_CS_REVIEW_DATE
+                     CUSTOMER_CS_REVIEW_DATE,
+                     CUSTOMER_EMAIL
                 INTO :HV-CUSTOMER-EYECATCHER,
                      :HV-CUSTOMER-SORTCODE,
                      :HV-CUSTOMER-NUMBER,
@@ -341,7 +345,8 @@
                      :HV-CUSTOMER-STATUS,
                      :HV-CUSTOMER-CREATE-DATE,
                      :HV-CUSTOMER-CREDIT-SCORE,
-                     :HV-CUSTOMER-CS-REVIEW-DATE
+                     :HV-CUSTOMER-CS-REVIEW-DATE,
+                     :HV-CUSTOMER-EMAIL
                 FROM CUSTOMER
                WHERE CUSTOMER_SORTCODE = :HV-CUSTOMER-SORTCODE
                  AND CUSTOMER_NUMBER = :HV-CUSTOMER-NUMBER
@@ -392,6 +397,7 @@
                  FUNCTION MOD(HV-CUSTOMER-CS-REVIEW-DATE / 100, 100)
               COMPUTE CUSTOMER-CS-REVIEW-DAY =
                  FUNCTION MOD(HV-CUSTOMER-CS-REVIEW-DATE, 100)
+              MOVE HV-CUSTOMER-EMAIL TO CUSTOMER-EMAIL
               GO TO RCD999
            END-IF.
 
@@ -450,6 +456,7 @@
               MOVE SPACES TO INQCUST-POSTCODE
               MOVE SPACES TO INQCUST-COUNTRY
               MOVE SPACES TO INQCUST-STATUS
+              MOVE SPACES TO INQCUST-EMAIL
               GO TO RCD999
            END-IF.
 
@@ -689,7 +696,8 @@
                      CUSTOMER_STATUS,
                      CUSTOMER_CREATED_DATE,
                      CUSTOMER_CREDIT_SCORE,
-                     CUSTOMER_CS_REVIEW_DATE
+                     CUSTOMER_CS_REVIEW_DATE,
+                     CUSTOMER_EMAIL
                 INTO :HV-CUSTOMER-EYECATCHER,
                      :HV-CUSTOMER-SORTCODE,
                      :HV-CUSTOMER-NUMBER,
@@ -706,7 +714,8 @@
                      :HV-CUSTOMER-STATUS,
                      :HV-CUSTOMER-CREATE-DATE,
                      :HV-CUSTOMER-CREDIT-SCORE,
-                     :HV-CUSTOMER-CS-REVIEW-DATE
+                     :HV-CUSTOMER-CS-REVIEW-DATE,
+                     :HV-CUSTOMER-EMAIL
                 FROM CUSTOMER
                WHERE CUSTOMER_SORTCODE = :HV-CUSTOMER-SORTCODE
                ORDER BY CUSTOMER_NUMBER DESC

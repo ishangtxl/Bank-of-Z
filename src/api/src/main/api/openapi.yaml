@@ -582,6 +582,12 @@ components:
           maxLength: 20
           description: Customer phone number
           example: "+44 20 7946 0958"
+        email:
+          type: string
+          format: email
+          maxLength: 60
+          description: Customer email address
+          example: "john.smith@example.com"
         address:
           $ref: '#/components/schemas/Address'
         customerStatus:
@@ -637,6 +643,11 @@ components:
           type: string
           description: Customer phone number
           example: "+44 20 7946 0958"
+        email:
+          type: string
+          format: email
+          description: Customer email address
+          example: "john.smith@example.com"
         address:
           $ref: '#/components/schemas/Address'
         customerStatus:
@@ -696,6 +707,12 @@ components:
           description: Customer phone number
           example: "+44 20 7946 0958"
           maxLength: 20
+        email:
+          type: string
+          format: email
+          description: Customer email address
+          example: "john.smith@example.com"
+          maxLength: 60
         address:
           type: object
           properties:

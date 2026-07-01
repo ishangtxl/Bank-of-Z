@@ -72,6 +72,7 @@
           03 HV-CUSTOMER-CREATE-DATE    PIC S9(9) COMP.
           03 HV-CUSTOMER-CREDIT-SCORE   PIC S9(4) COMP.
           03 HV-CUSTOMER-CS-REVIEW-DATE PIC S9(9) COMP.
+          03 HV-CUSTOMER-EMAIL          PIC X(60).
 
       * Working storage for CUSTOMER data generation
        01 WS-CUSTOMER-RECORD.
@@ -324,6 +325,10 @@
 
        01 WS-SQLCODE-DISPLAY            PIC S9(8) DISPLAY
              SIGN LEADING SEPARATE.
+
+       77 WS-EMAIL-WORK                PIC X(60).
+       77 WS-EMAIL-DOMAIN              PIC X(16)
+                                       VALUE '@bankofz.example'.
 
        01 OPENED-DATE-ATTEMPTS          PIC S9(8) DISPLAY
              SIGN LEADING SEPARATE.
@@ -641,6 +646,15 @@
                    MOVE CUSTOMER-COUNTRY TO HV-CUSTOMER-COUNTRY
                    MOVE CUSTOMER-STATUS TO HV-CUSTOMER-STATUS
 
+                   MOVE SPACES TO WS-EMAIL-WORK
+                   STRING 'cust' DELIMITED BY SIZE
+                          CUSTOMER-NUMBER DELIMITED BY SIZE
+                          WS-EMAIL-DOMAIN DELIMITED BY SIZE
+                      INTO WS-EMAIL-WORK
+                   END-STRING
+                   MOVE WS-EMAIL-WORK TO CUSTOMER-EMAIL
+                   MOVE CUSTOMER-EMAIL TO HV-CUSTOMER-EMAIL
+
       *
       * Convert date of birth to INTEGER format (YYYYMMDD)
       *
@@ -691,7 +705,8 @@
                           CUSTOMER_STATUS,
                           CUSTOMER_CREATED_DATE,
                           CUSTOMER_CREDIT_SCORE,
-                          CUSTOMER_CS_REVIEW_DATE)
+                          CUSTOMER_CS_REVIEW_DATE,
+                          CUSTOMER_EMAIL)
                   VALUES(:HV-CUSTOMER-EYECATCHER,
                           :HV-CUSTOMER-SORTCODE,
                           :HV-CUSTOMER-NUMBER,
@@ -708,7 +723,8 @@
                           :HV-CUSTOMER-STATUS,
                           :HV-CUSTOMER-CREATE-DATE,
                           :HV-CUSTOMER-CREDIT-SCORE,
-                          :HV-CUSTOMER-CS-REVIEW-DATE)
+                          :HV-CUSTOMER-CS-REVIEW-DATE,
+                          :HV-CUSTOMER-EMAIL)
                END-EXEC
 
                    IF SQLCODE NOT = 0

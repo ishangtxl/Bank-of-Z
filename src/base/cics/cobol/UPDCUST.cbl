@@ -71,6 +71,7 @@
           03 HV-CUSTOMER-CREATE-DATE    PIC S9(9) COMP.
           03 HV-CUSTOMER-CREDIT-SCORE   PIC S9(4) COMP.
           03 HV-CUSTOMER-CS-REVIEW-DATE PIC S9(9) COMP.
+          03 HV-CUSTOMER-EMAIL          PIC X(60).
 
       * Pull in the SQL COMMAREA
        EXEC SQL
@@ -279,7 +280,8 @@
                      CUSTOMER_STATUS,
                      CUSTOMER_CREATED_DATE,
                      CUSTOMER_CREDIT_SCORE,
-                     CUSTOMER_CS_REVIEW_DATE
+                     CUSTOMER_CS_REVIEW_DATE,
+                     CUSTOMER_EMAIL
                 INTO :HV-CUSTOMER-EYECATCHER,
                      :HV-CUSTOMER-SORTCODE,
                      :HV-CUSTOMER-NUMBER,
@@ -296,7 +298,8 @@
                      :HV-CUSTOMER-STATUS,
                      :HV-CUSTOMER-CREATE-DATE,
                      :HV-CUSTOMER-CREDIT-SCORE,
-                     :HV-CUSTOMER-CS-REVIEW-DATE
+                     :HV-CUSTOMER-CS-REVIEW-DATE,
+                     :HV-CUSTOMER-EMAIL
                 FROM CUSTOMER
                WHERE CUSTOMER_SORTCODE = :HV-CUSTOMER-SORTCODE
                  AND CUSTOMER_NUMBER = :HV-CUSTOMER-NUMBER
@@ -350,6 +353,10 @@
               MOVE COMM-STATUS TO HV-CUSTOMER-STATUS
            END-IF.
 
+           IF COMM-EMAIL(1:1) NOT = ' '
+              MOVE COMM-EMAIL TO HV-CUSTOMER-EMAIL
+           END-IF.
+
            IF COMM-DOB-YEAR NOT = 0
               COMPUTE HV-CUSTOMER-DOB =
                  (COMM-DOB-YEAR * 10000) +
@@ -372,7 +379,8 @@
                      CUSTOMER_CITY = :HV-CUSTOMER-CITY,
                      CUSTOMER_POSTCODE = :HV-CUSTOMER-POSTCODE,
                      CUSTOMER_COUNTRY = :HV-CUSTOMER-COUNTRY,
-                     CUSTOMER_STATUS = :HV-CUSTOMER-STATUS
+                     CUSTOMER_STATUS = :HV-CUSTOMER-STATUS,
+                     CUSTOMER_EMAIL = :HV-CUSTOMER-EMAIL
                WHERE CUSTOMER_SORTCODE = :HV-CUSTOMER-SORTCODE
                  AND CUSTOMER_NUMBER = :HV-CUSTOMER-NUMBER
            END-EXEC.
@@ -409,6 +417,7 @@
            MOVE HV-CUSTOMER-POSTCODE TO COMM-POSTCODE OF COMM-ADDR.
            MOVE HV-CUSTOMER-COUNTRY TO COMM-COUNTRY OF COMM-ADDR.
            MOVE HV-CUSTOMER-STATUS TO COMM-STATUS.
+           MOVE HV-CUSTOMER-EMAIL TO COMM-EMAIL.
            COMPUTE COMM-CREATED-YEAR =
               HV-CUSTOMER-CREATE-DATE / 10000.
            COMPUTE COMM-CREATED-MONTH =

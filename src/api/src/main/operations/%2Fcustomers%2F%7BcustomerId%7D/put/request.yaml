@@ -75,3 +75,7 @@ mappings:
             required: false
             nullable: false
             template: "{{$body.customerStatus}}"
+        - COMM-EMAIL:
+            required: false
+            nullable: false
+            template: "{{$exists(body.email) ? $body.email : \"\"}}"
